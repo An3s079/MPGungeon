@@ -21,10 +21,11 @@ namespace MPGungeon.MPServer
         //we need to be able to get player identity (might be even harder with stuff like cc's)
         public float health;
         public float maxHealth;
+        public int Armor;
 
         public List<byte[]> textureHashes = new List<byte[]>();
 
-        public void Initialize(byte id, string username, string animation, float health, float maxHealth, bool isHost)
+        public void Initialize(byte id, string username, string animation, float health, float maxHealth, int armor, bool isHost)
         {
             this.id = id;
             this.username = username;
@@ -32,6 +33,7 @@ namespace MPGungeon.MPServer
             this.health = health;
             this.maxHealth = maxHealth;
             this.isHost = isHost;
+            this.Armor = armor;
         }
 
         public void SetPosition(Vector3 position)

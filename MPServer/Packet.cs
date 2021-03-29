@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace MPGungeon.MPServer
 {
+    //plenty of comments already
+
     /// <summary>Sent from server to client.</summary>
     public enum ServerPackets
     {

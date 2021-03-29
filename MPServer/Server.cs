@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Linq;
+using System.Text;
 using System.Net.Sockets;
+using System.Net;
 using UnityEngine;
 
 namespace MPGungeon.MPServer
 {
-    //who knows what this is for
     public enum TextureType
     {
         Baldur,
@@ -23,7 +24,6 @@ namespace MPGungeon.MPServer
         Wraiths,
     }
 
-    //uhhh, is the actual server that players connect to (?)
     public class Server
     {
         public static int MaxPlayers { get; private set; }
@@ -43,7 +43,7 @@ namespace MPGungeon.MPServer
 
             Log("Starting Server...");
             InitializeServerData();
-
+            
             _tcpListener = new TcpListener(IPAddress.Any, Port);
             _tcpListener.Start();
             _tcpListener.BeginAcceptTcpClient(TCPConnectCallback, null);
@@ -62,11 +62,11 @@ namespace MPGungeon.MPServer
 
             for (int i = 1; i <= MaxPlayers; i++)
             {
-                //if (clients[i].tcp.socket == null)
-                //{
-                //    clients[i].tcp.Connect(client);
-                //    return;
-                //}
+                if (clients[i].tcp.socket == null)
+                {
+                    clients[i].tcp.Connect(client);
+                    return;
+                }
             }
 
             Log($"{client.Client.RemoteEndPoint} failed to connect. Server full!");
@@ -85,26 +85,26 @@ namespace MPGungeon.MPServer
                     return;
                 }
 
-                //using (Packet packet = new Packet(data))
-                //{
-                //    int clientId = packet.ReadInt();
+                using (Packet packet = new Packet(data))
+                {
+                    int clientId = packet.ReadInt();
 
-                //    if (clientId == 0)
-                //    {
-                //        return;
-                //    }
+                    if (clientId == 0)
+                    {
+                        return;
+                    }
 
-                //    if (clients[clientId].udp.endPoint == null)
-                //    {
-                //        clients[clientId].udp.Connect(clientEndPoint);
-                //        return;
-                //    }
+                    if (clients[clientId].udp.endPoint == null)
+                    {
+                        clients[clientId].udp.Connect(clientEndPoint);
+                        return;
+                    }
 
-                //    if (clients[clientId].udp.endPoint.ToString() == clientEndPoint.ToString())
-                //    {
-                //        clients[clientId].udp.HandleData(packet);
-                //    }
-                //}
+                    if (clients[clientId].udp.endPoint.ToString() == clientEndPoint.ToString())
+                    {
+                        clients[clientId].udp.HandleData(packet);
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -140,8 +140,6 @@ namespace MPGungeon.MPServer
             PacketHandlers = new Dictionary<int, PacketHandler>
             {
                 { (int) ClientPackets.WelcomeReceived, ServerHandle.WelcomeReceived },
-                //{ (int) ClientPackets.TextureFragment, ServerHandle.HandleTextureFragment }, skin stuff
-                //{ (int) ClientPackets.TextureRequest, ServerHandle.HandleTextureRequest },
                 { (int) ClientPackets.PlayerPosition, ServerHandle.PlayerPosition },
                 { (int) ClientPackets.PlayerScale, ServerHandle.PlayerScale },
                 { (int) ClientPackets.PlayerAnimation, ServerHandle.PlayerAnimation },
@@ -163,6 +161,6 @@ namespace MPGungeon.MPServer
             _udpListener.Close();
         }
 
-        private static void Log(object message) => Debug.Log("[Server] " + message);
+        private static void Log(object message) => ETGModConsole.Log("[Server] " + message);
     }
 }

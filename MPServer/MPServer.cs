@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using MPGungeon.MPServer.Canvas;
 
 namespace MPGungeon.MPServer
 {
@@ -29,6 +30,14 @@ namespace MPGungeon.MPServer
 
             DontDestroyOnLoad(playerPrefab);
             DontDestroyOnLoad(_networkManager);
+        }
+
+        void Update()
+        {
+            if(GameManager.Instance.IsPaused == true)
+                OptionsPanel.Panel.SetActive(true, false);
+            else
+                OptionsPanel.Panel.SetActive(false, true);
         }
     }
 }

@@ -7,8 +7,7 @@ using System.Text;
 using Gungeon;
 using UnityEngine;
 using System.Globalization;
-using UnityEngine.Networking;
-
+using MPGungeon.MPServer.Canvas;
 namespace MPGungeon
 {
 	public class Module : ETGModule
@@ -17,12 +16,36 @@ namespace MPGungeon
 		public static readonly string MOD_NAME = "Gungeon Multiplayer";
 		public static readonly string VERSION = "1.0.0";
 		public static readonly string TEXT_COLOR = "#00FFFF";
+		public static Dictionary<byte[], string> textureCache = new Dictionary<byte[], string>(new MPServer.Util.ByteArrayComparer());
+
 		public override void Start()
 		{
 			try
 			{
 			
-				
+				 
+            // Initialize texture cache
+            // This will allow us to easily send textures to th e server when asked to.
+            Log("Listing saved textures :");
+            string cacheDir = Path.Combine(Application.dataPath, "SkinCache");
+            Directory.CreateDirectory(cacheDir);
+            string[] files = Directory.GetFiles(cacheDir);
+            foreach (string filePath in files)
+            {
+                string filename = Path.GetFileName(filePath);
+                Log(filename);
+
+                byte[] hash = new byte[20];
+                for (int i = 0; i < 40; i += 2)
+                {
+                    hash[i / 2] = Convert.ToByte(filename.Substring(i, 2), 16);
+                }
+
+                textureCache[hash] = filePath;
+            }
+
+				GameManager.Instance.gameObject.AddComponent<MPServer.MPServer>();
+				GUIController.Instance.BuildMenus();
 				ETGModConsole.Commands.AddGroup("mp", args =>
 				{
 					Log("Gungeon Multiplayer mod made by An3s and Glorfindel (ScionOfMemory) :)");

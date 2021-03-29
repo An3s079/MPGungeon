@@ -123,22 +123,22 @@ namespace MPGungeon.MPServer
             }
         }
 
-        #region CustomKnight Integration
+        //#region CustomKnight Integration
 
-        public static void SendTexture(byte fromClient, byte[] hash, byte[] texture)
-        {
-            using (Packet packet = new Packet((int)ServerPackets.TextureFragment))
-            {
-                // Since the ordering of TCP packets is guaranteed, we don't have
-                // to put it in the packet - the client will handle it just fine.
-                packet.Write(hash);
-                packet.Write(texture.Length);
-                packet.Write(texture);
-                SendTCPData(fromClient, packet);
-            }
-        }
+        //public static void SendTexture(byte fromClient, byte[] hash, byte[] texture)
+        //{
+        //    using (Packet packet = new Packet((int)ServerPackets.TextureFragment))
+        //    {
+        //        // Since the ordering of TCP packets is guaranteed, we don't have
+        //        // to put it in the packet - the client will handle it just fine.
+        //        packet.Write(hash);
+        //        packet.Write(texture.Length);
+        //        packet.Write(texture);
+        //        SendTCPData(fromClient, packet);
+        //    }
+        //}
 
-        #endregion CustomKnight Integration
+        //#endregion CustomKnight Integration
 
         public static void DestroyPlayer(byte toClient, int clientToDestroy)
         {
@@ -193,13 +193,14 @@ namespace MPGungeon.MPServer
             }
         }
 
-        public static void HealthUpdated(byte fromClient, int health, int maxHealth)
+        public static void HealthUpdated(byte fromClient, float health, float maxHealth, int Armor)
         {
             using (Packet packet = new Packet((int)ServerPackets.HealthUpdated))
             {
                 packet.Write(fromClient);
                 packet.Write(health);
                 packet.Write(maxHealth);
+                packet.Write(Armor);
 
                 Log("Sending Health Data to all clients except " + fromClient);
                 SendTCPDataToAll(fromClient, packet);
@@ -227,6 +228,6 @@ namespace MPGungeon.MPServer
             }
         }
 
-        private static void Log(object message) => Debug.Log("[Server Send] " + message);
+        private static void Log(object message) => ETGModConsole.Log("[Server Send] " + message);
     }
 }

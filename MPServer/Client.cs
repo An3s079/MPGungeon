@@ -229,10 +229,11 @@ namespace MPGungeon.MPServer
         /// <param name="animation">The animation that the new player starts in.</param>
         /// <param name="health">The current health of the new player.</param>
         /// <param name="maxHealth">The maximum health of the new player.</param>
-        public void SendIntoGame(string username, Vector3 position, Vector3 scale, string animation, int health, int maxHealth, bool isHost)
+        /// /// <param name="Armor">The current armor of the new player.</param>
+        public void SendIntoGame(string username, Vector3 position, Vector3 scale, string animation, float health, float maxHealth, int Armor, bool isHost)
         {
             player = NetworkManager.Instance.InstantiatePlayer(position, scale);
-            player.Initialize(id, username, animation, health, maxHealth, isHost);
+            player.Initialize(id, username, animation, health, maxHealth, Armor, isHost);
 
             UnityEngine.Object.DontDestroyOnLoad(player);
         }

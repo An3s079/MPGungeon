@@ -38,10 +38,6 @@
     <Reference Include="Assembly-CSharp.Base.mm">
       <HintPath>$(EtgManagedDirectoryPath)Assembly-CSharp.Base.mm.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(EtgManagedDirectoryPath)Ionic.Zip.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.Compatibility" />
     <Reference Include="Microsoft.VisualBasic.Compatibility.Data" />
@@ -61,31 +57,69 @@
     <Reference Include="UnityEngine.CoreModule.Base.mm">
       <HintPath>$(EtgManagedDirectoryPath)UnityEngine.CoreModule.Base.mm.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\..\..\..\..\!ETG\EtG_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
       <HintPath>$(EtgManagedDirectoryPath)UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>$(EtgManagedDirectoryPath)UnityEngine.Networking.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\..\..\..\..\!ETG\EtG_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(EtgManagedDirectoryPath)UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>..\..\..\..\..\!ETG\EtG_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>..\..\..\..\..\!ETG\EtG_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
-    <Compile Include="Host.cs" />
     <Compile Include="Module.cs" />
-    <Compile Include="MyNetworkManager.cs" />
+    <Compile Include="MPServer\Canvas\CanvasButton.cs" />
+    <Compile Include="MPServer\Canvas\CanvasImage.cs" />
+    <Compile Include="MPServer\Canvas\CanvasInput.cs" />
+    <Compile Include="MPServer\Canvas\CanvasPanel.cs" />
+    <Compile Include="MPServer\Canvas\CanvasText.cs" />
+    <Compile Include="MPServer\Canvas\CanvasToggle.cs" />
+    <Compile Include="MPServer\Canvas\GUIController.cs" />
+    <Compile Include="MPServer\Canvas\OptionsPanel.cs" />
+    <Compile Include="MPServer\Client.cs" />
+    <Compile Include="MPServer\Constants.cs" />
+    <Compile Include="MPServer\Extensions.cs" />
+    <Compile Include="MPServer\MPServer.cs" />
+    <Compile Include="MPServer\NetworkManager.cs" />
+    <Compile Include="MPServer\Packet.cs" />
+    <Compile Include="MPServer\Player.cs" />
+    <Compile Include="MPServer\Server.cs" />
+    <Compile Include="MPServer\ServerHandle.cs" />
+    <Compile Include="MPServer\ServerSend.cs" />
+    <Compile Include="MPServer\ServerSettings.cs" />
+    <Compile Include="MPServer\ThreadManager.cs" />
+    <Compile Include="MPServer\Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="InputSimulatorPlus">
       <Version>1.0.7</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MPClient\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MPServer\Images\Checkmark.png" />
+    <EmbeddedResource Include="MPServer\Images\Panel_BG.png" />
+    <EmbeddedResource Include="MPServer\Images\Toggle_BG.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CheckProps" BeforeTargets="ResolveReferences">
     <Error Condition="!Exists('local.props')" Text="local.props file not found. Run config.ps1." />
   </Target>
-
 </Project>

@@ -21,9 +21,9 @@ namespace MPGungeon.MPServer
             string activeScene = packet.ReadString();
             Vector3 position = packet.ReadVector3();
             Vector3 scale = packet.ReadVector3();
-            int health = packet.ReadInt();
-            int maxHealth = packet.ReadInt();
-
+            float health = packet.ReadFloat();
+            float maxHealth = packet.ReadFloat();
+            int Armor = packet.ReadInt();
 
             if (isHost)
             {
@@ -40,7 +40,7 @@ namespace MPGungeon.MPServer
                 }
             }
 
-            Server.clients[fromClient].SendIntoGame(username, position, scale, currentClip, health, maxHealth, isHost);
+            Server.clients[fromClient].SendIntoGame(username, position, scale, currentClip, health, maxHealth, Armor, isHost);
 
             /*for (int i = 0; i < Enum.GetNames(typeof(TextureType)).Length; i++)   Idk wtf this was for, already commented 
             {
@@ -194,15 +194,16 @@ namespace MPGungeon.MPServer
 
         public static void HealthUpdated(byte fromClient, Packet packet)
         {
-            int currentHealth = packet.ReadInt();
-            int currentMaxHealth = packet.ReadInt();
+            float currentHealth = packet.ReadFloat();
+            float currentMaxHealth = packet.ReadFloat();
+            int Armor = packet.ReadInt();
 
             Log("From Client: " + currentHealth + " " + currentMaxHealth + " ");
 
             Server.clients[fromClient].player.health = currentHealth;
             Server.clients[fromClient].player.maxHealth = currentMaxHealth;
 
-            ServerSend.HealthUpdated(fromClient, currentHealth, currentMaxHealth);
+            ServerSend.HealthUpdated(fromClient, currentHealth, currentMaxHealth, Armor);
         }
 
         public static void PlayerDisconnected(byte fromClient, Packet packet)
