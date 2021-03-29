@@ -26,8 +26,8 @@ namespace MPGungeon.MPServer
 
     public class Server
     {
-        public static int MaxPlayers { get; private set; }
-        public static int Port { get; private set; }
+        public static int MaxPlayers; //{ get; private set; }
+        public static int Port; //{ get; private set; }
         public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
         public delegate void PacketHandler(byte fromClient, Packet packet);
 
@@ -51,7 +51,7 @@ namespace MPGungeon.MPServer
             _udpListener = new UdpClient(Port);
             _udpListener.BeginReceive(UDPReceiveCallback, null);
 
-            Log($"Server started on port {Port}.");
+            Log($"Server started on port {Port}, ip: {IPAddress.Any}.");
         }
 
         private static void TCPConnectCallback(IAsyncResult result)

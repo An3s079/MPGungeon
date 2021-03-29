@@ -43,7 +43,7 @@ namespace MPGungeon
 
                 textureCache[hash] = filePath;
             }
-
+				
 				GameManager.Instance.gameObject.AddComponent<MPServer.MPServer>();
 				GUIController.Instance.BuildMenus();
 				ETGModConsole.Commands.AddGroup("mp", args =>
