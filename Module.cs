@@ -22,7 +22,7 @@ namespace MPGungeon
 		{
 			try
 			{
-			
+				Tools.Init();
 				 
             // Initialize texture cache
             // This will allow us to easily send textures to th e server when asked to.

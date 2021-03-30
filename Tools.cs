@@ -27,5 +27,15 @@ namespace MPGungeon
 		{
 			transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, scaleZ);
 		}
+
+		public static void Init()
+		{
+			AssetBundle assetBundle = ResourceManager.LoadAssetBundle("shared_auto_001");
+			AssetBundle assetBundle2 = ResourceManager.LoadAssetBundle("shared_auto_002");
+			shared_auto_001 = assetBundle;
+			shared_auto_002 = assetBundle2;
+		}
+		public static AssetBundle shared_auto_002;
+		public static AssetBundle shared_auto_001;
 	}
 }

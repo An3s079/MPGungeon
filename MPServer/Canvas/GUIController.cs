@@ -5,6 +5,9 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Drawing.Text;
+using
+ System.Windows.Media;
 namespace MPGungeon.MPServer.Canvas
 {
     public class GUIController : MonoBehaviour
@@ -58,25 +61,19 @@ namespace MPGungeon.MPServer.Canvas
 
         public Font arial;
         public Font perpetua;
-        public Font trajanBold;
-        public Font trajanNormal;
+        public Font gungun;
 
         private void LoadResources()
         {
             foreach (Font font in Resources.FindObjectsOfTypeAll<Font>())
             {
-                if (font != null && font.name == "TrajanPro-Bold")
-                {
-                    trajanBold = font;
-                }
 
-                if (font != null && font.name == "TrajanPro-Regular")
-                {
-                    trajanNormal = font;
-                }
+                gungun = Tools.shared_auto_001.LoadAsset<Font>("04B_03__");
 
-                //Just in case for some reason the computer doesn't have arial
-                if (font != null && font.name == "Perpetua")
+
+
+            //Just in case for some reason the computer doesn't have arial
+            if (font != null && font.name == "Perpetua")
                 {
                     perpetua = font;
                 }

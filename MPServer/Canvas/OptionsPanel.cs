@@ -45,9 +45,9 @@ namespace MPGungeon.MPServer.Canvas
                 "Options",
                 new Vector2(x, y),
                 new Vector2(panelImg.width, 60), 
-                GUIController.Instance.arial,
-                24,
-                FontStyle.Bold,
+                GUIController.Instance.gungun,
+                32,
+                FontStyle.Normal,
                 TextAnchor.MiddleCenter
             );
             y += 70;
@@ -58,10 +58,10 @@ namespace MPGungeon.MPServer.Canvas
                 GUIController.Instance.images["Checkmark"],
                 new Vector2(x, y),
                 new Vector2(panelImg.width, 20),
-                new Vector2(-60, 0),
+                new Vector2(-80, 0),
                 new Rect(0, 0, 150, 20),
                 TogglePvP,
-                GUIController.Instance.arial,
+                GUIController.Instance.gungun,
                 "Enable PvP",
                 16
             );
@@ -73,10 +73,10 @@ namespace MPGungeon.MPServer.Canvas
                 GUIController.Instance.images["Checkmark"],
                 new Vector2(x, y),
                 new Vector2(panelImg.width, 20),
-                new Vector2(-60, 0),
+                new Vector2(-80, 0),
                 new Rect(0, 0, 150, 20),
                 ToggleSpectator,
-                GUIController.Instance.arial,
+                GUIController.Instance.gungun,
                 "Spectator Mode",
                 16
             );
