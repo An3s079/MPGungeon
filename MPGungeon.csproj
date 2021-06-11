@@ -35,6 +35,10 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>$(EtgManagedDirectoryPath)ModBackup\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\source\repos\GuiltMod\bin\Debug\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp.Base.mm">
       <HintPath>$(EtgManagedDirectoryPath)Assembly-CSharp.Base.mm.dll</HintPath>
     </Reference>
@@ -112,12 +116,12 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MPClient\" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="MPServer\Images\Checkmark.png" />
     <EmbeddedResource Include="MPServer\Images\Panel_BG.png" />
     <EmbeddedResource Include="MPServer\Images\Toggle_BG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MPClient\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CheckProps" BeforeTargets="ResolveReferences">
