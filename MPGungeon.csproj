@@ -42,11 +42,6 @@
     <Reference Include="Assembly-CSharp.Base.mm">
       <HintPath>$(EtgManagedDirectoryPath)Assembly-CSharp.Base.mm.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.VisualBasic.Compatibility" />
-    <Reference Include="Microsoft.VisualBasic.Compatibility.Data" />
-    <Reference Include="Microsoft.VisualBasic.Vsa" />
-    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -85,44 +80,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Module.cs" />
-    <Compile Include="MPServer\Canvas\CanvasButton.cs" />
-    <Compile Include="MPServer\Canvas\CanvasImage.cs" />
-    <Compile Include="MPServer\Canvas\CanvasInput.cs" />
-    <Compile Include="MPServer\Canvas\CanvasPanel.cs" />
-    <Compile Include="MPServer\Canvas\CanvasText.cs" />
-    <Compile Include="MPServer\Canvas\CanvasToggle.cs" />
-    <Compile Include="MPServer\Canvas\GUIController.cs" />
-    <Compile Include="MPServer\Canvas\OptionsPanel.cs" />
-    <Compile Include="MPServer\Client.cs" />
-    <Compile Include="MPServer\Constants.cs" />
-    <Compile Include="MPServer\Extensions.cs" />
-    <Compile Include="MPServer\MPServer.cs" />
-    <Compile Include="MPServer\NetworkManager.cs" />
-    <Compile Include="MPServer\Packet.cs" />
-    <Compile Include="MPServer\Player.cs" />
-    <Compile Include="MPServer\Server.cs" />
-    <Compile Include="MPServer\ServerHandle.cs" />
-    <Compile Include="MPServer\ServerSend.cs" />
-    <Compile Include="MPServer\ServerSettings.cs" />
-    <Compile Include="MPServer\ThreadManager.cs" />
-    <Compile Include="MPServer\Util.cs" />
+    <Compile Include="AdvancedLogging.cs" />
+    <Compile Include="Client\Client.cs" />
+    <Compile Include="Client\ClientHandle.cs" />
+    <Compile Include="Client\ClientSend.cs" />
+    <Compile Include="Client\Packet.cs" />
+    <Compile Include="Client\ThreadManager.cs" />
+    <Compile Include="Server\Client.cs" />
+    <Compile Include="MPGungeon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools.cs" />
+    <Compile Include="Server\Packet.cs" />
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="Server\ServerHandle.cs" />
+    <Compile Include="Server\ServerSend.cs" />
+    <Compile Include="Server\ThreadManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="InputSimulatorPlus">
       <Version>1.0.7</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="MPServer\Images\Checkmark.png" />
-    <EmbeddedResource Include="MPServer\Images\Panel_BG.png" />
-    <EmbeddedResource Include="MPServer\Images\Toggle_BG.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MPClient\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CheckProps" BeforeTargets="ResolveReferences">
     <Error Condition="!Exists('local.props')" Text="local.props file not found. Run config.ps1." />
