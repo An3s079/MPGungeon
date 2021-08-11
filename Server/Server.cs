@@ -17,8 +17,8 @@ namespace MPGungeon.Server
 		public static Dictionary<int, PacketHandler> packetHandlers = new Dictionary<int, PacketHandler>();
 
 		private static TcpListener tcpListener;
-
-		public static void Start(int _MaxPlayers = 3, int _Port = 26950)
+		private static UdpClient udpListener;
+		public static void Start(int _MaxPlayers = 3, int _Port = 34197)
 		{
 			MaxPlayers = _MaxPlayers;
 			Port = _Port;
@@ -30,7 +30,64 @@ namespace MPGungeon.Server
 			tcpListener.Start();
 			tcpListener.BeginAcceptTcpClient(new AsyncCallback(TCPConnectCallback), null);
 
+			udpListener = new UdpClient(_Port);
+			udpListener.BeginReceive(UDPRecieveCallback, null);
+
 			ETGModConsole.Log("Server started on port " + Port);
+		}
+
+		private static void UDPRecieveCallback(IAsyncResult _result)
+		{
+			try
+			{
+				IPEndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
+				byte[] data = udpListener.EndReceive(_result, ref clientEndPoint);
+				udpListener.BeginReceive(UDPRecieveCallback, null);
+
+				if (data.Length < 4)
+				{
+					return;
+				}
+
+				using (Packet packet = new Packet(data))
+				{
+					int clientId = packet.ReadInt();
+
+					if (clientId == 0)
+					{
+						return;
+					}
+					if (clients[clientId].udp.endpoint == null) // new clients initial connection message
+					{
+						clients[clientId].udp.Connect(clientEndPoint);
+						return;
+					}
+
+					if(clients[clientId].udp.endpoint.ToString() == clientEndPoint.ToString())
+					{
+						clients[clientId].udp.HandleData(packet);
+					}
+				}
+
+			}catch(Exception e)
+			{
+				ETGModConsole.Log("error recieving UDP data: " + e);
+			}
+				
+		}
+
+		public static void SendUDPData(IPEndPoint _clientEndPoint, Packet _packet)
+		{
+			try
+			{
+				if(_clientEndPoint != null)
+				{
+					udpListener.BeginSend(_packet.ToArray(), _packet.Length(), _clientEndPoint, null, null);
+				}
+			}catch(Exception e)
+			{
+				ETGModConsole.Log("Error sending data to " + _clientEndPoint + "via UDP: " + e);
+			}
 		}
 
 		private static void TCPConnectCallback(IAsyncResult _result)
@@ -59,7 +116,7 @@ namespace MPGungeon.Server
 			packetHandlers = new Dictionary<int, PacketHandler>()
 			{
 				{ (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived},
-				//{ (int)ClientPackets.MessageRecieved, ServerHandle.MessageRecieved }
+				{ (int)ClientPackets.udpTestRecieved, ServerHandle.UDPTestRecieved }
 			};
 		}
 	}

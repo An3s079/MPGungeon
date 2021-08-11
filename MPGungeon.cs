@@ -37,8 +37,6 @@ namespace MPGungeon
 
 				ETGModConsole.Commands.GetGroup("mp").AddUnit("startserver", this.StartServer);
 				ETGModConsole.Commands.GetGroup("mp").AddUnit("startclient", this.StartClient);
-				ETGModConsole.Commands.GetGroup("mp").AddUnit("sayserver", this.Say);
-				ETGModConsole.Commands.GetGroup("mp").AddUnit("sayclient", this.SayClient);
 			}
 			catch (Exception e)
 			{
@@ -47,28 +45,7 @@ namespace MPGungeon
 			AdvancedLogging.Log($"{MOD_NAME} v{VERSION} started successfully.", new Color32(19, 235, 155, 255), HaveModIcon: true);
 		}
 
-		private void SayClient(string[] obj)
-		{
-			using (Client.Packet _packet = new Client.Packet((int)Client.ClientPackets.MessageRecieved))
-			{
-				_packet.Write(string.Join(" ", obj));
-
-				Client.ClientSend.SendTCPData(_packet);
-			}
-		}
-
-		private void Say(string[] obj)
-		{
-			using (Packet _packet = new Packet((int)ServerPackets.Message))
-			{
-				_packet.Write(string.Join(" ", obj));
-
-
-				ServerSend.SendTCPDataToAll(_packet);
-			}
-			
-		}
-
+		
 		private void StartClient(string[] obj)
 		{
 			

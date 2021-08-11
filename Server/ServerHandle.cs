@@ -18,9 +18,10 @@ namespace MPGungeon.Server
 				ETGModConsole.Log($"Player \"{username}\" (ID: {_fromClient}) has assumed the wrong client ID ({_clientIdCheck})!");
 		}
 
-		public static void MessageRecieved(int _fromClient, Packet _packet)
+		public static void UDPTestRecieved(int _fromClient, Packet _packet)
 		{
-			ETGModConsole.Log(_packet.ReadString());
+			string msg = _packet.ReadString();
+			ETGModConsole.Log("recieved packet via udp: "+ msg);
 		}
 	}
 }

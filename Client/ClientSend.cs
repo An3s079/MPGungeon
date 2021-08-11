@@ -14,6 +14,13 @@ namespace MPGungeon.Client
 			Client.instance.tcp.SendData(_packet);
 		}
 
+		public static void SendUDPData(Packet _packet)
+		{
+			_packet.WriteLength();
+			Client.instance.udp.SendData(_packet);
+		}
+
+		#region packets, gonna have lotsa these lol
 		public static void WelcomeRecieved()
 		{
 			using (Packet _packet = new Packet((int)ClientPackets.welcomeReceived))
@@ -24,5 +31,15 @@ namespace MPGungeon.Client
 				SendTCPData(_packet);
 			}
 		}
+
+		public static void UDPTestRecieved()
+		{
+			using (Packet packet = new Packet((int)ClientPackets.udpTestRecieved))
+			{
+				packet.Write("Recieved UDP Packet.");
+				SendUDPData(packet);
+			}
+		}
+		#endregion
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 namespace MPGungeon.Client
@@ -14,15 +15,17 @@ namespace MPGungeon.Client
 
 			ETGModConsole.Log("Message from server: " + _msg);
 			Client.instance.myId = _myID;
-
+			Client.instance.udp.Connect(((IPEndPoint)Client.instance.tcp.socket.Client.LocalEndPoint).Port);
 			ClientSend.WelcomeRecieved();
+
+			
 		}
 
-		public static void Message(Packet _packet)
+		public static void UDPTest(Packet _packet)
 		{
-			string _msg = _packet.ReadString();
-
-			ETGModConsole.Log("Message from server: " + _msg);
+			string msg = _packet.ReadString();
+			ETGModConsole.Log(msg);
+			ClientSend.UDPTestRecieved();
 		}
 	}
 }

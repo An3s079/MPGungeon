@@ -14,9 +14,10 @@ namespace MPGungeon.Client
 		public static int dataBufferSize = 4096;
 
 		public string ip = "127.0.0.1";
-		public int port = 26950;
+		public int port = 34197;
 		public int myId = 0;
 		public TCP tcp;
+		public UDP udp;
 
 		private delegate void PacketHandler(Packet _packet);
 		private static Dictionary<int, PacketHandler> packetHandlers;
@@ -32,6 +33,7 @@ namespace MPGungeon.Client
 		private void Start()
 		{
 			tcp = new TCP();
+			udp = new UDP();
 		}
 
 		public void ConnectToServer()
@@ -39,6 +41,7 @@ namespace MPGungeon.Client
 			InitializeClientData();
 
 			tcp.Connect();
+			
 		}
 
 		public class TCP
@@ -89,6 +92,8 @@ namespace MPGungeon.Client
 					AdvancedLogging.LogError(e);
 				}
 			}
+
+			
 			private void ReceiveCallback(IAsyncResult _result)
 			{
 				try
@@ -158,12 +163,93 @@ namespace MPGungeon.Client
 			}
 
 		}
+
+		public class UDP
+		{
+			public UdpClient socket;
+			public IPEndPoint endPoint;
+
+			public UDP()
+			{
+				endPoint = new IPEndPoint(IPAddress.Parse(instance.ip), instance.port);
+			}
+
+			public void Connect(int _localPort)
+			{
+				socket = new UdpClient(_localPort);
+				
+				socket.Connect(endPoint);
+				socket.BeginReceive(RecieveCallback, null);
+
+				using (Packet _packet = new Packet())
+				{
+					SendData(_packet);
+				}
+				ETGModConsole.Log("udp connected");
+			}
+			public void SendData(Packet _packet)
+			{
+				try
+				{
+					_packet.InsertInt(instance.myId);
+					if (socket != null)
+					{
+						socket.BeginSend(_packet.ToArray(), _packet.Length(), null, null);
+					}
+
+				}
+				catch(Exception e)
+				{
+					ETGModConsole.Log("Error sending data to server via UDP: " + e);
+				}
+			}
+
+			private void RecieveCallback(IAsyncResult _result)
+			{
+				try
+				{
+					byte[] data = socket.EndReceive(_result, ref endPoint);
+					socket.BeginReceive(RecieveCallback, null);
+
+					if(data.Length < 4)
+					{
+						ETGModConsole.Log("data too short");
+						//add disconnect later
+						return;
+					}
+					HandleData(data);
+				}
+				catch
+				{
+					//add disconnect later
+				}
+			}
+
+			private void HandleData(byte[] _data)
+			{
+				using (Packet _packet = new Packet(_data))
+				{
+					int _packetLength = _packet.ReadInt();
+					_data = _packet.ReadBytes(_packetLength);
+				}
+
+				ThreadManager.ExecuteOnMainThread(() =>
+				{
+					using (Packet _packet = new Packet(_data))
+					{
+						int _packetId = _packet.ReadInt();
+						packetHandlers[_packetId](_packet);
+					}
+				});
+			}
+			
+		}
 		private void InitializeClientData()
 		{
 			packetHandlers = new Dictionary<int, PacketHandler>()
 			{
 				{ (int)ServerPackets.welcome , ClientHandle.Welcome},
-				//{ (int)ServerPackets.Message , ClientHandle.Message}
+				{ (int)ServerPackets.udpTest , ClientHandle.UDPTest}
 			};
 
 		}
