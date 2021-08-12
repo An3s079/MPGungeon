@@ -37,6 +37,7 @@ namespace MPGungeon
 
 				ETGModConsole.Commands.GetGroup("mp").AddUnit("startserver", this.StartServer);
 				ETGModConsole.Commands.GetGroup("mp").AddUnit("startclient", this.StartClient);
+				ETGModConsole.Commands.GetGroup("mp").AddUnit("msg", this.msg);
 			}
 			catch (Exception e)
 			{
@@ -45,16 +46,21 @@ namespace MPGungeon
 			AdvancedLogging.Log($"{MOD_NAME} v{VERSION} started successfully.", new Color32(19, 235, 155, 255), HaveModIcon: true);
 		}
 
-		
+		private void msg(string[] obj)
+		{
+			Client.ClientSend.Message(obj);
+		}
+
 		private void StartClient(string[] obj)
 		{
-			
-			Client.Client.instance.ConnectToServer();
+			if(!string.IsNullOrEmpty(obj[0]))
+				Client.Client.instance.ConnectToServer(obj[0]);
 		}
 
 		private void StartServer(string[] obj)
 		{
 			Server.Server.Start();
+			Client.Client.instance.ConnectToServer();
 		}
 
 		public override void Exit() { }

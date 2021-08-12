@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Windows.Forms;
+using SGUI;
 
 namespace MPGungeon.Server
 {
@@ -32,8 +34,39 @@ namespace MPGungeon.Server
 
 			udpListener = new UdpClient(_Port);
 			udpListener.BeginReceive(UDPRecieveCallback, null);
+			//string CodeString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
 
-			ETGModConsole.Log("Server started on port " + Port);
+			//CodeString = CodeString.Replace(".", "Sa");
+			//CodeString = CodeString.Replace("0", "cR");
+			//CodeString = CodeString.Replace("1", "b");
+			//CodeString = CodeString.Replace("2", "t");
+			//CodeString = CodeString.Replace("3", "FM");
+			//CodeString = CodeString.Replace("4", "$%");
+			//CodeString = CodeString.Replace("6", "e!");
+			//CodeString = CodeString.Replace("7", "~Y");
+			//CodeString = CodeString.Replace("8", "p-");
+			//CodeString = CodeString.Insert(0, RandomString(5));
+			//CodeString = CodeString.Insert(CodeString.Length, RandomString(5));
+
+			ETGModConsole.Log("Server started on port " + Port); //+ CodeString);
+			//AdvancedLogging.LogButton("Press here to write code to console textbox for copying.", UnityEngine.Color.green).OnClick += (SGUI.SButton button) =>
+			//{
+			//	STextField field = (STextField)ETGModConsole.Instance.GUI[1];
+			//	field.Text = CodeString;
+			//};
+		}
+		private static string RandomString(int length)
+		{
+			const string pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890123456789";
+			var builder = new StringBuilder();
+			Random r = new Random();
+			for (var i = 0; i < length; i++)
+			{
+				var c = pool[r.Next(0, pool.Length)];
+				builder.Append(c);
+			}
+
+			return builder.ToString();
 		}
 
 		private static void UDPRecieveCallback(IAsyncResult _result)
@@ -116,7 +149,8 @@ namespace MPGungeon.Server
 			packetHandlers = new Dictionary<int, PacketHandler>()
 			{
 				{ (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived},
-				{ (int)ClientPackets.udpTestRecieved, ServerHandle.UDPTestRecieved }
+				{ (int)ClientPackets.udpTestReceived, ServerHandle.UDPTestRecieved },
+				{ (int)ClientPackets.message, ServerHandle.MessageRecieved },
 			};
 		}
 	}

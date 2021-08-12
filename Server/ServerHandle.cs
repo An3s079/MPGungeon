@@ -23,5 +23,15 @@ namespace MPGungeon.Server
 			string msg = _packet.ReadString();
 			ETGModConsole.Log("recieved packet via udp: "+ msg);
 		}
+
+		internal static void MessageRecieved(int _fromClient, Packet _packet)
+		{
+			using(Packet packet = new Packet((int)ServerPackets.messageReceived))
+			{
+				var msg = _packet.ReadString();
+				packet.Write("Message from user " + _fromClient + ": " + msg);
+				ServerSend.SendTCPDataToAll(_fromClient, packet);
+			}
+		}
 	}
 }

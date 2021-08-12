@@ -27,5 +27,11 @@ namespace MPGungeon.Client
 			ETGModConsole.Log(msg);
 			ClientSend.UDPTestRecieved();
 		}
+
+		public static void Message(Packet _packet)
+		{
+			string msg = _packet.ReadString();
+			ETGModConsole.Log(msg);
+		}
 	}
 }

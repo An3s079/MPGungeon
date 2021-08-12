@@ -36,12 +36,36 @@ namespace MPGungeon.Client
 			udp = new UDP();
 		}
 
-		public void ConnectToServer()
+		public void ConnectToServer(string CodeString = null)
 		{
-			InitializeClientData();
+			try
+			{
+				if (CodeString != null)
+				{
+					var code = CodeString;
+					//code = code.Remove(0, 5);
 
-			tcp.Connect();
-			
+					//code = code.Remove(code.Length - 5, 5);
+
+					//code = code.Replace("Sa", ".");
+					//code = code.Replace("cR", "0");
+					//code = code.Replace("b", "1");
+					//code = code.Replace("t", "2");
+					//code = code.Replace("FM", "3");
+					//code = code.Replace("$%", "4");
+					//code = code.Replace("e!", "6");
+					//code = code.Replace("~Y", "7");
+					//code = code.Replace("p-", "8");
+					//ETGModConsole.Log(code);
+					ip = code;
+				}
+				InitializeClientData();
+
+				tcp.Connect();
+			}catch(Exception e)
+			{
+				ETGModConsole.Log(e.ToString());
+			}
 		}
 
 		public class TCP
@@ -54,16 +78,22 @@ namespace MPGungeon.Client
 
 			public void Connect()
 			{
-				ETGModConsole.Log("Attempting to connect to server...");
-				socket = new TcpClient
+				try
 				{
-					ReceiveBufferSize = dataBufferSize,
-					SendBufferSize = dataBufferSize
-				};
+					ETGModConsole.Log("Attempting to connect to server...");
+					socket = new TcpClient
+					{
+						ReceiveBufferSize = dataBufferSize,
+						SendBufferSize = dataBufferSize
+					};
 
-				receiveBuffer = new byte[dataBufferSize];
-				socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);
-				
+					receiveBuffer = new byte[dataBufferSize];
+					socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);
+				}
+				catch (Exception e)
+				{
+					ETGModConsole.Log(e.ToString());
+				}
 			}
 
 			private void ConnectCallback(IAsyncResult _result)
@@ -87,6 +117,7 @@ namespace MPGungeon.Client
 					{
 						stream.BeginWrite(_packet.ToArray(), 0, _packet.Length(), null, null);
 					}
+
 				}catch(Exception e)
 				{
 					AdvancedLogging.LogError(e);
@@ -249,7 +280,8 @@ namespace MPGungeon.Client
 			packetHandlers = new Dictionary<int, PacketHandler>()
 			{
 				{ (int)ServerPackets.welcome , ClientHandle.Welcome},
-				{ (int)ServerPackets.udpTest , ClientHandle.UDPTest}
+				{ (int)ServerPackets.udpTest , ClientHandle.UDPTest},
+				{ (int)ServerPackets.messageReceived , ClientHandle.Message},
 			};
 
 		}

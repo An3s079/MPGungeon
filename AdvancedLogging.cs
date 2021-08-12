@@ -11,35 +11,7 @@ namespace MPGungeon
 	{
 		public static void LogError(object msg)
 		{
-			string message = msg.ToString();
-			Color color = Color.red;
-
-			SGroup sGroup = new SGroup();
-			sGroup.AutoGrowDirection = SGroup.EDirection.Vertical;
-			sGroup.AutoLayout = (SGroup g) => g.AutoLayoutHorizontal;
-			sGroup.OnUpdateStyle = delegate (SElement elem)
-			{
-				elem.Fill();
-			};
-			sGroup.AutoLayoutVerticalStretch = false;
-			sGroup.AutoLayoutHorizontalStretch = false;
-			sGroup.GrowExtra = Vector2.zero;
-			sGroup.ContentSize = Vector2.zero;
-			sGroup.AutoLayoutPadding = 0;
-			sGroup.Background = Color.clear;
-
-			LogLabel modname = new LogLabel(MPGungeon.metadata.Name + ": ");
-			modname.Colors[0] = color;
-			sGroup.Children.Add(modname);
-
-			LogLabel label = new LogLabel(message);
-			label.Colors[0] = color;
-			label.Background = Color.clear;
-			sGroup.Children.Add(label);
-
-			ETGModConsole.Instance.GUI[0].Children.Add(sGroup);
-
-			ETGModConsole.Instance.GUI[0].UpdateStyle();
+			ETGModConsole.Log("<color=#d90f0f>" + MPGungeon.metadata.Name + ": " + msg + "</color>");
 		}
 
 		public static void LogPlain(object msg, Color32? col = null)
@@ -70,11 +42,9 @@ namespace MPGungeon
 
 			//in your module outside of methods you need:
 			// public static ETGModuleMetadata metadata = new ETGModuleMetadata(); 
-			//public static string ZipFilePath;
 
 			//then in your modules init you need:
 			// metadata = this.Metadata;
-			//ZipFilePath = this.Metadata.Archive;
 			Color color = Color.white;
 			if (col != null)
 			{
@@ -166,10 +136,11 @@ namespace MPGungeon
 		/// <param name="col">text color you want</param>
 		/// <param name="HaveModName">whether your log messege will have the mod name at the front</param>
 		/// <param name="HaveModIcon">whether your logged messege will have your mod icon at the front</param>
-		public static SButton LogButton(object msg, Color32? col = null, bool HaveModName = false, bool HaveModIcon = false)
+		///  <param name="UpdatedTextOnClick">if you want your button to show mre text upon being clicked put it here</param>
+		public static SButton LogButton(object msg, Color32? col = null, string UpdatedTextOnClick = null, bool HaveModName = false, bool HaveModIcon = false)
 		{
 
-			SButton img;
+			SButton btn;
 			Color color = Color.white;
 			if (col != null)
 			{
@@ -179,38 +150,67 @@ namespace MPGungeon
 			{
 				if (HaveModName == false)
 				{
-					img = new SButton($"{msg}");
-					img.Colors[0] = color;
-					ETGModConsole.Instance.GUI[0].Children.Add(img);
+					btn = new SButton($"{msg}");
+					btn.Background = Color.clear;
+					btn.Colors[0] = color;
+					ETGModConsole.Instance.GUI[0].Children.Add(btn);
 
 				}
 				else
 				{
-					img = new SButton($"{MPGungeon.metadata.Name}: {msg}");
-					img.Colors[0] = color;
-					ETGModConsole.Instance.GUI[0].Children.Add(img);
+					btn = new SButton($"{MPGungeon.metadata.Name}: {msg}");
+					btn.Background = Color.clear;
+					btn.Colors[0] = color;
+					ETGModConsole.Instance.GUI[0].Children.Add(btn);
 				}
 			}
 			else
 			{
 				if (HaveModName == false)
 				{
-					img = new SButton($"{msg}");
-					img.Colors[0] = color;
+					btn = new SButton($"{msg}");
+					btn.Background = Color.clear;
+					btn.Colors[0] = color;
 					if (File.Exists(MPGungeon.metadata.Archive))
-						img.Icon = MPGungeon.metadata.Icon;
-					ETGModConsole.Instance.GUI[0].Children.Add(img);
+						btn.Icon = MPGungeon.metadata.Icon;
+					ETGModConsole.Instance.GUI[0].Children.Add(btn);
 				}
 				else
 				{
-					img = new SButton($"{MPGungeon.metadata.Name}: {msg}");
-					img.Colors[0] = color;
+					btn = new SButton($"{MPGungeon.metadata.Name}: {msg}");
+					btn.Background = Color.clear;
+					btn.Colors[0] = color;
 					if (File.Exists(MPGungeon.metadata.Archive))
-						img.Icon = MPGungeon.metadata.Icon;
-					ETGModConsole.Instance.GUI[0].Children.Add(img);
+						btn.Icon = MPGungeon.metadata.Icon;
+					ETGModConsole.Instance.GUI[0].Children.Add(btn);
 				}
 			}
-			return img;
+
+			bool ShowAlt = false;
+			if (!string.IsNullOrEmpty(UpdatedTextOnClick))
+			{
+				var i = new SLabel(UpdatedTextOnClick);
+				btn.OnClick += (obj) =>
+				{
+					ShowAlt = !ShowAlt;
+					ETGModConsole.Instance.GUI[0].UpdateStyle();
+					
+				};
+				
+				i.Colors[0] = color;
+				i.Background = Color.clear;
+
+				i.OnUpdateStyle = delegate (SElement elem)
+				{
+					elem.Size.y = ShowAlt ? elem.Size.y : 0f;
+					elem.Visible = ShowAlt;
+					((SGroup)ETGModConsole.Instance.GUI[0]).ContentSize.y = 0;
+				};
+				ETGModConsole.Instance.GUI[0].Children.Add(i);
+
+			}
+			
+			return btn;
 
 		}
 
@@ -284,7 +284,7 @@ namespace MPGungeon
 			return texture;
 		}
 	}
-
+	
 
 	public class LogLabel : SElement
 	{
@@ -327,4 +327,10 @@ namespace MPGungeon
 			Draw.Text(this, Vector2.zero, Size, Text, Alignment);
 		}
 	}
+
+
 }
+
+
+
+

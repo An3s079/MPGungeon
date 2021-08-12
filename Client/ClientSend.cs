@@ -34,10 +34,21 @@ namespace MPGungeon.Client
 
 		public static void UDPTestRecieved()
 		{
-			using (Packet packet = new Packet((int)ClientPackets.udpTestRecieved))
+			using (Packet packet = new Packet((int)ClientPackets.udpTestReceived))
 			{
 				packet.Write("Recieved UDP Packet.");
 				SendUDPData(packet);
+			}
+		}
+
+		public static void Message(string[] _msg)
+		{
+			using (Packet packet = new Packet((int)ClientPackets.message))
+			{
+				var msg = String.Join(" ", _msg);
+				packet.Write(msg);
+				SendTCPData(packet);
+				ETGModConsole.Log("message sent to other users: " + msg);
 			}
 		}
 		#endregion

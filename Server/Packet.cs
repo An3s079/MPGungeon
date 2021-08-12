@@ -5,23 +5,25 @@ using System.Text;
 namespace MPGungeon.Server
 {
 
-	//yeah i stole this.
+    //yeah i stole this.
 
-	/// <summary>Sent from server to client.</summary>
-	public enum ServerPackets
-        {
-            welcome = 1,
-            udpTest
-        }
+    /// <summary>Sent from server to client.</summary>
+    public enum ServerPackets
+    {
+        welcome = 1,
+        udpTest,
+        messageReceived
+    }
 
-        /// <summary>Sent from client to server.</summary>
-        public enum ClientPackets
-        {
-            welcomeReceived = 1,
-            udpTestRecieved 
-        }
+    /// <summary>Sent from client to server.</summary>
+    public enum ClientPackets
+    {
+        welcomeReceived = 1,
+        udpTestReceived,
+        message
+    }
 
-        public class Packet : IDisposable
+    public class Packet : IDisposable
         {
             private List<byte> buffer;
             private byte[] readableBuffer;

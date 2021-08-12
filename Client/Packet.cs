@@ -11,14 +11,16 @@ namespace MPGungeon.Client
 	public enum ServerPackets
     {
         welcome = 1,
-        udpTest
+        udpTest,
+        messageReceived
     }
 
     /// <summary>Sent from client to server.</summary>
     public enum ClientPackets
     {
         welcomeReceived = 1,
-        udpTestRecieved
+        udpTestReceived,
+        message
     }
 
     public class Packet : IDisposable
