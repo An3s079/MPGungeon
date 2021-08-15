@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -84,12 +85,14 @@
     <Compile Include="Client\Client.cs" />
     <Compile Include="Client\ClientHandle.cs" />
     <Compile Include="Client\ClientSend.cs" />
+    <Compile Include="Client\Manager.cs" />
     <Compile Include="Client\Packet.cs" />
     <Compile Include="Client\ThreadManager.cs" />
     <Compile Include="Server\Client.cs" />
     <Compile Include="MPGungeon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\Packet.cs" />
+    <Compile Include="Server\Player.cs" />
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\ServerHandle.cs" />
     <Compile Include="Server\ServerSend.cs" />
@@ -100,7 +103,9 @@
       <Version>1.0.7</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CheckProps" BeforeTargets="ResolveReferences">
     <Error Condition="!Exists('local.props')" Text="local.props file not found. Run config.ps1." />

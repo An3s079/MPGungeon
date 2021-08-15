@@ -32,15 +32,6 @@ namespace MPGungeon.Client
 			}
 		}
 
-		public static void UDPTestRecieved()
-		{
-			using (Packet packet = new Packet((int)ClientPackets.udpTestReceived))
-			{
-				packet.Write("Recieved UDP Packet.");
-				SendUDPData(packet);
-			}
-		}
-
 		public static void Message(string[] _msg)
 		{
 			using (Packet packet = new Packet((int)ClientPackets.message))
@@ -49,6 +40,16 @@ namespace MPGungeon.Client
 				packet.Write(msg);
 				SendTCPData(packet);
 				ETGModConsole.Log("message sent to other users: " + msg);
+			}
+		}
+
+		public static void SendPlayerPos(Vector2 _pos, int _id)
+		{
+			using (Packet packet = new Packet((int)ClientPackets.PlayerMovement))
+			{
+				packet.Write(_id);
+				packet.Write(_pos);
+				SendUDPData(packet);
 			}
 		}
 		#endregion

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace MPGungeon.Server
 {
@@ -71,13 +72,15 @@ namespace MPGungeon.Server
 			}
 		}
 
-		public static void UDPTest(int _toClient)
+		public static void SpawnPlayer(int _toClient, Player _player)
 		{
-			using(Packet packet = new Packet((int)ServerPackets.udpTest))
+			using (Packet _packet = new Packet((int)ServerPackets.SpawnPlayer))
 			{
-				packet.Write("yay, it worked");
+				_packet.Write(_player.id);
+				_packet.Write(_player.username);
+				_packet.Write(new Vector3((int)43, 17.4f, 0));
 
-				SendUDPData(_toClient, packet);
+				SendTCPData(_toClient, _packet);
 			}
 		}
 

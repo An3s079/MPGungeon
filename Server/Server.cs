@@ -20,6 +20,7 @@ namespace MPGungeon.Server
 
 		private static TcpListener tcpListener;
 		private static UdpClient udpListener;
+		public static Dictionary<int, PlayerController> players = new Dictionary<int, PlayerController>();
 		public static void Start(int _MaxPlayers = 3, int _Port = 34197)
 		{
 			MaxPlayers = _MaxPlayers;
@@ -139,6 +140,7 @@ namespace MPGungeon.Server
 				}
 			}
 			AdvancedLogging.LogError($"{client.Client.RemoteEndPoint} failed to connect: Server full.");
+			
 		}
 
 		private static void InitializeServerData()
@@ -149,8 +151,8 @@ namespace MPGungeon.Server
 			packetHandlers = new Dictionary<int, PacketHandler>()
 			{
 				{ (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived},
-				{ (int)ClientPackets.udpTestReceived, ServerHandle.UDPTestRecieved },
 				{ (int)ClientPackets.message, ServerHandle.MessageRecieved },
+				{ (int)ClientPackets.PlayerMovement, ServerHandle.PlayerMovement }
 			};
 		}
 	}

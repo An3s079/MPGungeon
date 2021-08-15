@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace MPGungeon.Server
 {
@@ -11,16 +12,20 @@ namespace MPGungeon.Server
     public enum ServerPackets
     {
         welcome = 1,
-        udpTest,
-        messageReceived
+        messageReceived,
+        SpawnPlayer,
+        PlayerPosition,
+        PlayerAnim
     }
 
     /// <summary>Sent from client to server.</summary>
     public enum ClientPackets
     {
         welcomeReceived = 1,
+        message,
         udpTestReceived,
-        message
+        PlayerMovement,
+        PlayerAnim
     }
 
     public class Packet : IDisposable
@@ -164,12 +169,27 @@ namespace MPGungeon.Server
                 Write(_value.Length); // Add the length of the string to the packet
                 buffer.AddRange(Encoding.ASCII.GetBytes(_value)); // Add the string itself
             }
-            #endregion
+        public void Write(Vector3 value)
+        {
+            Write(value.x);
+            Write(value.y);
+            Write(value.z);
+        }
 
-            #region Read Data
-            /// <summary>Reads a byte from the packet.</summary>
-            /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
-            public byte ReadByte(bool _moveReadPos = true)
+        /// <summary>Adds a Vector2 to the packet.</summary>
+        /// <param name="value">The Vector2 to add.</param>
+        public void Write(Vector2 value)
+        {
+            Write(value.x);
+            Write(value.y);
+        }
+
+        #endregion
+
+        #region Read Data
+        /// <summary>Reads a byte from the packet.</summary>
+        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+        public byte ReadByte(bool _moveReadPos = true)
             {
                 if (buffer.Count > readPos)
                 {
@@ -335,9 +355,21 @@ namespace MPGungeon.Server
                     throw new Exception("Could not read value of type 'string'!");
                 }
             }
-            #endregion
 
-            private bool disposed = false;
+        public Vector3 ReadVector3(bool moveReadPos = true)
+        {
+            return new Vector3(ReadFloat(moveReadPos), ReadFloat(moveReadPos), ReadFloat(moveReadPos));
+        }
+
+        /// <summary>Reads a Vector2 from the packet.</summary>
+        /// <param name="moveReadPos">Whether or not to move the buffer's read position.</param>
+        public Vector2 ReadVector2(bool moveReadPos = true)
+        {
+            return new Vector2(ReadFloat(moveReadPos), ReadFloat(moveReadPos));
+        }
+        #endregion
+
+        private bool disposed = false;
 
             protected virtual void Dispose(bool _disposing)
             {

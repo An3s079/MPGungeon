@@ -36,6 +36,18 @@ namespace MPGungeon.Client
 			udp = new UDP();
 		}
 
+		void Update()
+		{
+			if (GameManager.Instance.PrimaryPlayer != null)
+			{
+				PlayerController p = GameManager.Instance.PrimaryPlayer;
+				if (p.Velocity.x > 0 || p.Velocity.y > 0)
+				{
+					ClientSend.SendPlayerPos(p.specRigidbody.Position.GetPixelVector2(), myId);
+				}
+			}
+		}
+
 		public void ConnectToServer(string CodeString = null)
 		{
 			try
@@ -280,8 +292,9 @@ namespace MPGungeon.Client
 			packetHandlers = new Dictionary<int, PacketHandler>()
 			{
 				{ (int)ServerPackets.welcome , ClientHandle.Welcome},
-				{ (int)ServerPackets.udpTest , ClientHandle.UDPTest},
 				{ (int)ServerPackets.messageReceived , ClientHandle.Message},
+				{ (int)ServerPackets.SpawnPlayer, ClientHandle.SpawnPlayer},
+				{ (int)ServerPackets.PlayerPosition, ClientHandle.SetPlayerPos},
 			};
 
 		}
