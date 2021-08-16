@@ -53,8 +53,10 @@ namespace MPGungeon
 
 		private void StartClient(string[] obj)
 		{
-			if(!string.IsNullOrEmpty(obj[0]))
+			if(obj != null)
 				Client.Client.instance.ConnectToServer(obj[0]);
+			else
+				Client.Client.instance.ConnectToServer("127.0.0.1");
 		}
 
 		private void StartServer(string[] obj)

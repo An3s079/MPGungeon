@@ -10,7 +10,7 @@ namespace MPGungeon.Server
 		{
 			int _clientIdCheck = _packet.ReadInt();
 			string username = _packet.ReadString();
-
+			string identity = _packet.ReadString();
 			if(_fromClient == 1)
 				ETGModConsole.Log($"Player \"{username}\" connected successfully and is now player {_fromClient}. (this is you)");
 			else
@@ -19,7 +19,7 @@ namespace MPGungeon.Server
 			if (_fromClient != _clientIdCheck)
 				ETGModConsole.Log($"Player \"{username}\" (ID: {_fromClient}) has assumed the wrong client ID ({_clientIdCheck})!");
 			if(_fromClient != 1)
-				Server.clients[_fromClient].SendIntoGame("null");
+				Server.clients[_fromClient].SendIntoGame("null", identity);
 		}
 
 		internal static void MessageRecieved(int _fromClient, Packet _packet)

@@ -78,9 +78,10 @@ namespace MPGungeon.Server
 			{
 				_packet.Write(_player.id);
 				_packet.Write(_player.username);
+				_packet.Write(_player.identity);
 				_packet.Write(new Vector3((int)43, 17.4f, 0));
 
-				SendTCPData(_toClient, _packet);
+				SendTCPDataToAll(_toClient, _packet);
 			}
 		}
 

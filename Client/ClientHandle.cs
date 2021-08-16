@@ -40,8 +40,9 @@ namespace MPGungeon.Client
 		{
 			int _id = _packet.ReadInt();
 			string _username = _packet.ReadString();
+			string character = _packet.ReadString();
 			Vector3 _position = _packet.ReadVector3();
-			Manager.SpawnPlayer(_id, "null name", _position);
+			Manager.SpawnPlayer(_id, "null name", character, _position);
 		}
 	}
 }

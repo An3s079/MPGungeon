@@ -27,6 +27,7 @@ namespace MPGungeon.Client
 			{
 				_packet.Write(Client.instance.myId);
 				_packet.Write("Null name");
+				_packet.Write(GameManager.Instance.PrimaryPlayer.characterIdentity.ToString());
 
 				SendTCPData(_packet);
 			}
