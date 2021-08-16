@@ -14,6 +14,7 @@ namespace MpGungeon.Client
 
         public static void SpawnPlayer(int _id, string _username, string character, Vector3 _position)
         {
+<<<<<<< HEAD
             GameObject _player = new GameObject();
 			ItemAPI.ItemBuilder.AddSpriteToObject("player2", "MpGungeon/Resources/RedSquare", _player);
 			Instantiate(_player, _position, Quaternion.identity);
@@ -34,5 +35,12 @@ namespace MpGungeon.Client
 			//myFieldInfo.SetValue(_player.GetComponent<PlayerController>(), new GungeonActions());
 			players.Add(_id, _player);
 		}
+=======
+            GameObject _player;
+  	    _player = Instantiate(BraveResources.Load("Player" + character, ".prefab") as GameObject, _position, Quaternion.identity);
+
+            players.Add(_id, _player.GetComponent<PlayerController>());
+        }
+>>>>>>> 47948c5e4e669a73bc7f3f7f9a3d94777554f736
     }
 }
