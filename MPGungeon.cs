@@ -7,11 +7,11 @@ using System.Text;
 using Gungeon;
 using UnityEngine;
 using System.Globalization;
-using MPGungeon.Server;
+using MpGungeon.Server;
 
-namespace MPGungeon
+namespace MpGungeon
 {
-	public class MPGungeon : ETGModule
+	public class MpGungeon : ETGModule
 	{
 		
 		/*
@@ -49,20 +49,31 @@ namespace MPGungeon
 		private void msg(string[] obj)
 		{
 			Client.ClientSend.Message(obj);
+
 		}
 
 		private void StartClient(string[] obj)
 		{
-			if(obj != null)
-				Client.Client.instance.ConnectToServer(obj[0]);
+			if (GameManager.Instance.PrimaryPlayer != null)
+			{
+				if (obj.Length > 0)
+					Client.Client.instance.ConnectToServer(obj[0]);
+				else
+					Client.Client.instance.ConnectToServer("127.0.0.1");
+			}
 			else
-				Client.Client.instance.ConnectToServer("127.0.0.1");
+				AdvancedLogging.LogError("Primary player cannot be null!");
 		}
 
 		private void StartServer(string[] obj)
 		{
-			Server.Server.Start();
-			Client.Client.instance.ConnectToServer();
+			if (GameManager.Instance.PrimaryPlayer != null)
+			{
+				Server.Server.Start();
+				Client.Client.instance.ConnectToServer();
+			}
+			else
+				AdvancedLogging.LogError("Primary player cannot be null!");
 		}
 
 		public override void Exit() { }

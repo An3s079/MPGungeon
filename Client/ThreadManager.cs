@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MPGungeon.Client
+namespace MpGungeon.Client
 {
 	class ThreadManager : MonoBehaviour
 	{

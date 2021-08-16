@@ -8,8 +8,8 @@
     <ProjectGuid>{57445610-0892-47C3-BE16-453172104123}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MPGungeon</RootNamespace>
-    <AssemblyName>MPGungeon</AssemblyName>
+    <RootNamespace>MpGungeon</RootNamespace>
+    <AssemblyName>MpGungeon</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,6 +41,12 @@
     </Reference>
     <Reference Include="Assembly-CSharp.Base.mm">
       <HintPath>$(EtgManagedDirectoryPath)Assembly-CSharp.Base.mm.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.RuntimeDetour">
+      <HintPath>..\..\..\..\..\!ETG\EnterTheGungeon\Mods\MPGungeon\MonoMod.RuntimeDetour.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Utils">
+      <HintPath>..\..\..\..\..\!ETG\EnterTheGungeon\Mods\MPGungeon\MonoMod.Utils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -88,6 +94,15 @@
     <Compile Include="Client\Manager.cs" />
     <Compile Include="Client\Packet.cs" />
     <Compile Include="Client\ThreadManager.cs" />
+    <Compile Include="ItemAPI\AdvancedGunBehaviour.cs" />
+    <Compile Include="ItemAPI\CompanionBuilder.cs" />
+    <Compile Include="ItemAPI\CustomSynergies.cs" />
+    <Compile Include="ItemAPI\FakePrefab\FakePrefab.cs" />
+    <Compile Include="ItemAPI\FakePrefab\FakePrefabHooks.cs" />
+    <Compile Include="ItemAPI\ItemBuilder.cs" />
+    <Compile Include="ItemAPI\ResourceExtractor.cs" />
+    <Compile Include="ItemAPI\SpriteBuilder.cs" />
+    <Compile Include="ItemAPI\Tools.cs" />
     <Compile Include="Server\Client.cs" />
     <Compile Include="MPGungeon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,6 +120,10 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\RedSquare.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CheckProps" BeforeTargets="ResolveReferences">

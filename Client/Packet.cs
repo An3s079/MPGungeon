@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace MPGungeon.Client
+namespace MpGungeon.Client
 {
 
     //yeah i stole this.

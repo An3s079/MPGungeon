@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using System.Net;
 
-namespace MPGungeon.Client
+namespace MpGungeon.Client
 {
 	class Client : MonoBehaviour
 	{

@@ -5,13 +5,13 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace MPGungeon
+namespace MpGungeon
 {
 	public static class AdvancedLogging
 	{
 		public static void LogError(object msg)
 		{
-			ETGModConsole.Log("<color=#d90f0f>" + MPGungeon.metadata.Name + ": " + msg + "</color>");
+			ETGModConsole.Log("<color=#d90f0f>" + MpGungeon.metadata.Name + ": " + msg + "</color>");
 		}
 
 		public static void LogPlain(object msg, Color32? col = null)
@@ -66,17 +66,17 @@ namespace MPGungeon
 			sGroup.AutoLayoutPadding = 0;
 			sGroup.Background = Color.clear;
 
-			if (File.Exists(MPGungeon.metadata.Archive))
+			if (File.Exists(MpGungeon.metadata.Archive))
 			{
 				if (HaveModIcon)
 				{
-					SImage icon = new SImage(MPGungeon.metadata.Icon);
+					SImage icon = new SImage(MpGungeon.metadata.Icon);
 					sGroup.Children.Add(icon);
 				}
 			}
 			if (HaveModName)
 			{
-				LogLabel modname = new LogLabel(MPGungeon.metadata.Name + ": ");
+				LogLabel modname = new LogLabel(MpGungeon.metadata.Name + ": ");
 				modname.Colors[0] = color;
 				sGroup.Children.Add(modname);
 			}
@@ -158,7 +158,7 @@ namespace MPGungeon
 				}
 				else
 				{
-					btn = new SButton($"{MPGungeon.metadata.Name}: {msg}");
+					btn = new SButton($"{MpGungeon.metadata.Name}: {msg}");
 					btn.Background = Color.clear;
 					btn.Colors[0] = color;
 					ETGModConsole.Instance.GUI[0].Children.Add(btn);
@@ -171,17 +171,17 @@ namespace MPGungeon
 					btn = new SButton($"{msg}");
 					btn.Background = Color.clear;
 					btn.Colors[0] = color;
-					if (File.Exists(MPGungeon.metadata.Archive))
-						btn.Icon = MPGungeon.metadata.Icon;
+					if (File.Exists(MpGungeon.metadata.Archive))
+						btn.Icon = MpGungeon.metadata.Icon;
 					ETGModConsole.Instance.GUI[0].Children.Add(btn);
 				}
 				else
 				{
-					btn = new SButton($"{MPGungeon.metadata.Name}: {msg}");
+					btn = new SButton($"{MpGungeon.metadata.Name}: {msg}");
 					btn.Background = Color.clear;
 					btn.Colors[0] = color;
-					if (File.Exists(MPGungeon.metadata.Archive))
-						btn.Icon = MPGungeon.metadata.Icon;
+					if (File.Exists(MpGungeon.metadata.Archive))
+						btn.Icon = MpGungeon.metadata.Icon;
 					ETGModConsole.Instance.GUI[0].Children.Add(btn);
 				}
 			}

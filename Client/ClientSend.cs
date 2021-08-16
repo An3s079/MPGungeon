@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace MPGungeon.Client
+namespace MpGungeon.Client
 {
 	class ClientSend : MonoBehaviour
 	{
@@ -28,7 +28,7 @@ namespace MPGungeon.Client
 				_packet.Write(Client.instance.myId);
 				_packet.Write("Null name");
 				_packet.Write(GameManager.Instance.PrimaryPlayer.characterIdentity.ToString());
-
+				_packet.Write(GameManager.Instance.PrimaryPlayer.specRigidbody.Position.GetPixelVector2());
 				SendTCPData(_packet);
 			}
 		}

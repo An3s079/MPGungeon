@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using UnityEngine;
 
-namespace MPGungeon.Client
+namespace MpGungeon.Client
 {
 	class ClientHandle
 	{
@@ -31,9 +31,9 @@ namespace MPGungeon.Client
 		public static void SetPlayerPos(Packet _packet)
 		{
 			int _id = _packet.ReadInt();
-			Vector3 _position = _packet.ReadVector3();
+			Vector3 _position = _packet.ReadVector2();
 
-			Manager.players[_id].specRigidbody.Position = new Position(_position);
+			Manager.players[_id].transform.position= _position;
 		}
 
 		public static void SpawnPlayer(Packet _packet)

@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Windows.Forms;
 using SGUI;
 
-namespace MPGungeon.Server
+namespace MpGungeon.Server
 {
 	class Server
 	{

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace MPGungeon.Server
+namespace MpGungeon.Server
 {
 	class ServerSend
 	{
@@ -79,7 +79,7 @@ namespace MPGungeon.Server
 				_packet.Write(_player.id);
 				_packet.Write(_player.username);
 				_packet.Write(_player.identity);
-				_packet.Write(new Vector3((int)43, 17.4f, 0));
+				_packet.Write(_player.position);
 
 				SendTCPDataToAll(_toClient, _packet);
 			}

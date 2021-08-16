@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
 
-namespace MPGungeon.Server
+namespace MpGungeon.Server
 {
 	class Client
 	{
@@ -169,9 +169,9 @@ namespace MPGungeon.Server
 			}
 		}
 
-		public void SendIntoGame(string _playerName, string identity)
+		public void SendIntoGame(string _playerName, string identity, Vector2 pos)
 		{
-			player = new Player(id, _playerName, new Vector3(0, 0, 0), identity);
+			player = new Player(id, _playerName, pos, identity);
 
 			foreach (Client _client in Server.clients.Values)
 			{
