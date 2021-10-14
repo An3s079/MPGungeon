@@ -13,11 +13,11 @@ namespace MpGungeon
 {
 	public class MpGungeon : ETGModule
 	{
-		
+
 		/*
 		 * we should totally add a buncha images in our logging, mhm yep.
 		 */
-
+		public static string ip;
 		public static readonly string MOD_NAME = "Gungeon Multiplayer";
 		public static readonly string VERSION = "1.0.0";
 
@@ -57,9 +57,15 @@ namespace MpGungeon
 			if (GameManager.Instance.PrimaryPlayer != null)
 			{
 				if (obj.Length > 0)
-					Client.Client.instance.ConnectToServer(obj[0]);
+				{
+					ip = obj[0];
+					Client.Client.instance.ConnectToServer(obj[0]);				
+				}
 				else
-					Client.Client.instance.ConnectToServer("127.0.0.1");
+				{
+					ip = "127.0.0.1";
+					Client.Client.instance.ConnectToServer("127.0.0.1");			
+				}
 			}
 			else
 				AdvancedLogging.LogError("Primary player cannot be null!");
@@ -69,8 +75,9 @@ namespace MpGungeon
 		{
 			if (GameManager.Instance.PrimaryPlayer != null)
 			{
+				ip = "127.0.0.1";
 				Server.Server.Start();
-				Client.Client.instance.ConnectToServer();
+				Client.Client.instance.ConnectToServer("127.0.0.1");			
 			}
 			else
 				AdvancedLogging.LogError("Primary player cannot be null!");

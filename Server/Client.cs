@@ -22,6 +22,7 @@ namespace MpGungeon.Server
 			id = _clientID;
 			tcp = new TCP(id);
 			udp = new UDP(id);
+			
 		}
 		public class TCP
 		{

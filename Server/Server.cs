@@ -35,6 +35,7 @@ namespace MpGungeon.Server
 
 			udpListener = new UdpClient(_Port);
 			udpListener.BeginReceive(UDPRecieveCallback, null);
+			udpListener.EnableBroadcast = true;
 			//string CodeString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
 
 			//CodeString = CodeString.Replace(".", "Sa");

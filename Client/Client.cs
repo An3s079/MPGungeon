@@ -13,7 +13,7 @@ namespace MpGungeon.Client
 		public static Client instance;
 		public static int dataBufferSize = 4096;
 
-		public string ip = "127.0.0.1";
+		public string ip;
 		public int port = 34197;
 		public int myId = 0;
 		public TCP tcp;
@@ -35,45 +35,41 @@ namespace MpGungeon.Client
 			tcp = new TCP();
 			udp = new UDP();
 		}
+		public int TicksPerSecond = 30;
+
+		private float _t;
 
 		void Update()
 		{
 			if (GameManager.Instance.PrimaryPlayer != null)
 			{
 				PlayerController p = GameManager.Instance.PrimaryPlayer;
-				if (p.Velocity.x > 0 || p.Velocity.y > 0)
+				if (p.specRigidbody.Velocity.magnitude > 0)
 				{
-					ClientSend.SendPlayerPos(p.specRigidbody.Position.GetPixelVector2(), myId);
+					float dur = 1f / this.TicksPerSecond;
+					_t += Time.deltaTime;
+					int cnt = 3;
+					while (_t > dur && cnt > 0)
+					{
+						_t -= dur;
+						cnt--;
+						ClientSend.SendPlayerPos(p.specRigidbody.Position.GetPixelVector2(), myId);
+					}
+
+					
 				}
 			}
 		}
 
-		public void ConnectToServer(string CodeString = null)
+		public void ConnectToServer(string CodeString)
 		{
 			try
 			{
-				if (CodeString != null)
-				{
-					var code = CodeString;
-					//code = code.Remove(0, 5);
-
-					//code = code.Remove(code.Length - 5, 5);
-
-					//code = code.Replace("Sa", ".");
-					//code = code.Replace("cR", "0");
-					//code = code.Replace("b", "1");
-					//code = code.Replace("t", "2");
-					//code = code.Replace("FM", "3");
-					//code = code.Replace("$%", "4");
-					//code = code.Replace("e!", "6");
-					//code = code.Replace("~Y", "7");
-					//code = code.Replace("p-", "8");
-					//ETGModConsole.Log(code);
-					ip = code;
-				}
+				ip = CodeString;
 				InitializeClientData();
 
 				tcp.Connect();
+
 			}catch(Exception e)
 			{
 				ETGModConsole.Log(e.ToString());
@@ -96,11 +92,12 @@ namespace MpGungeon.Client
 					socket = new TcpClient
 					{
 						ReceiveBufferSize = dataBufferSize,
-						SendBufferSize = dataBufferSize
+						SendBufferSize = dataBufferSize,
 					};
-
 					receiveBuffer = new byte[dataBufferSize];
+					var i = instance.ip;
 					socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);
+					instance.ip = i;
 				}
 				catch (Exception e)
 				{
@@ -212,15 +209,11 @@ namespace MpGungeon.Client
 			public UdpClient socket;
 			public IPEndPoint endPoint;
 
-			public UDP()
-			{
-				endPoint = new IPEndPoint(IPAddress.Parse(instance.ip), instance.port);
-			}
-
 			public void Connect(int _localPort)
 			{
+				endPoint = new IPEndPoint(IPAddress.Parse(instance.ip), instance.port);
 				socket = new UdpClient(_localPort);
-				
+				socket.EnableBroadcast = true;
 				socket.Connect(endPoint);
 				socket.BeginReceive(RecieveCallback, null);
 
@@ -228,7 +221,12 @@ namespace MpGungeon.Client
 				{
 					SendData(_packet);
 				}
-				ETGModConsole.Log("udp connected");
+				using(Packet _packet = new Packet((int)ClientPackets.message))
+				{
+					_packet.Write("WOO! The Udp Connected!");
+					ClientSend.SendUDPData(_packet);
+				}
+				
 			}
 			public void SendData(Packet _packet)
 			{
@@ -237,7 +235,7 @@ namespace MpGungeon.Client
 					_packet.InsertInt(instance.myId);
 					if (socket != null)
 					{
-						socket.BeginSend(_packet.ToArray(), _packet.Length(), null, null);
+						socket.BeginSend(_packet.ToArray(), _packet.Length(), endPoint, null, null);
 					}
 
 				}
