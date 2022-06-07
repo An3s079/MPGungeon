@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using UnityEngine;
-
+using Newtonsoft.Json;
 namespace MpGungeon.Client
 {
 	class ClientHandle
@@ -18,8 +18,8 @@ namespace MpGungeon.Client
 			Client.instance.myId = _myID;
 			Client.instance.udp.Connect(((IPEndPoint)Client.instance.tcp.socket.Client.LocalEndPoint).Port);
 			ClientSend.WelcomeRecieved();
-
-			
+			var obj = GameManager.Instance.PrimaryPlayer.gameObject.GetOrAddComponent<NetworkedObject>();
+			obj.ID = _myID;
 		}
 
 		public static void Message(Packet _packet)
@@ -28,14 +28,34 @@ namespace MpGungeon.Client
 			ETGModConsole.Log(msg);
 		}
 
-		public static void SetPlayerPos(Packet _packet)
+		public static void SetObjPos(Packet _packet)
 		{
 			int _id = _packet.ReadInt();
 			Vector3 _position = _packet.ReadVector2();
 
-			Manager.players[_id].transform.position= _position;
+			Manager.objects[_id].transform.position = _position;
 		}
+		public static void SetObjAnim(Packet _packet)
+		{
+			int _id = _packet.ReadInt();
+			try
+			{
+				string clip = _packet.ReadString();
+				var animator = Manager.objects[_id];
 
+				//animator.Play(clip);
+			}catch(Exception e)
+			{
+				ETGModConsole.Log("looking for key: " + _id + "\n have id's: ");
+				ETGModConsole.Log(Manager.objects.Count.ToString());
+				foreach (var key in Manager.objects)
+					{
+					
+						ETGModConsole.Log(key.Key.ToString()); 
+					}
+				ETGModConsole.Log("error setting anim: " + e);
+			}
+		}
 		public static void SpawnPlayer(Packet _packet)
 		{
 			int _id = _packet.ReadInt();

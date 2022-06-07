@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,13 +45,23 @@ namespace MpGungeon.Client
 			}
 		}
 
-		public static void SendPlayerPos(Vector2 _pos, int _id)
+		public static void SendObjectPos(Vector2 _pos, int _id)
 		{
-			using (Packet packet = new Packet((int)ClientPackets.PlayerMovement))
+			using (Packet packet = new Packet((int)ClientPackets.ObjectMovement))
 			{
 				packet.Write(_id);
 				packet.Write(_pos);
 				SendUDPData(packet);
+			}
+		}
+
+		public static void SendSpriteAnim(string anim, int _id)
+		{
+			using (Packet packet = new Packet((int)ClientPackets.ObjAnim))
+			{
+				packet.Write(_id);
+				packet.Write(anim);
+				SendTCPData(packet);
 			}
 		}
 		#endregion

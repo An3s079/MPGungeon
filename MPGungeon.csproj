@@ -35,18 +35,18 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>$(EtgManagedDirectoryPath)ModBackup\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\source\repos\GuiltMod\bin\Debug\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
     <Reference Include="Assembly-CSharp.Base.mm">
       <HintPath>$(EtgManagedDirectoryPath)Assembly-CSharp.Base.mm.dll</HintPath>
     </Reference>
     <Reference Include="MonoMod.RuntimeDetour">
-      <HintPath>..\..\..\..\..\!ETG\EnterTheGungeon\Mods\MPGungeon\MonoMod.RuntimeDetour.dll</HintPath>
+      <HintPath>$(EtgManagedDirectoryPath)..\..\Mods\MPGungeon\MonoMod.RuntimeDetour.dll</HintPath>
     </Reference>
     <Reference Include="MonoMod.Utils">
-      <HintPath>..\..\..\..\..\!ETG\EnterTheGungeon\Mods\MPGungeon\MonoMod.Utils.dll</HintPath>
+      <HintPath>$(EtgManagedDirectoryPath)..\..\Mods\MPGungeon\MonoMod.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\!ETG\EnterTheGungeon\EnterTheGungeon\EtG_Data\Managed\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,7 +57,9 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\!ETG\EnterTheGungeon\EnterTheGungeon\EtG_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(EtgManagedDirectoryPath)ModBackup\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -65,7 +67,7 @@
       <HintPath>$(EtgManagedDirectoryPath)UnityEngine.CoreModule.Base.mm.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\..\..\..\!ETG\EtG_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>$(EtgManagedDirectoryPath)UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
       <HintPath>$(EtgManagedDirectoryPath)UnityEngine.JSONSerializeModule.dll</HintPath>
@@ -74,16 +76,16 @@
       <HintPath>$(EtgManagedDirectoryPath)UnityEngine.Networking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\..\..\..\!ETG\EtG_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>$(EtgManagedDirectoryPath)UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(EtgManagedDirectoryPath)UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsModule">
-      <HintPath>..\..\..\..\..\!ETG\EtG_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+      <HintPath>$(EtgManagedDirectoryPath)UnityEngine.UIElementsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>..\..\..\..\..\!ETG\EtG_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>$(EtgManagedDirectoryPath)UnityEngine.UIModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +105,7 @@
     <Compile Include="ItemAPI\ResourceExtractor.cs" />
     <Compile Include="ItemAPI\SpriteBuilder.cs" />
     <Compile Include="ItemAPI\Tools.cs" />
+    <Compile Include="Client\NetworkedObject.cs" />
     <Compile Include="Server\Client.cs" />
     <Compile Include="MPGungeon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

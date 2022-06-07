@@ -14,8 +14,8 @@ namespace MpGungeon.Server
         welcome = 1,
         messageReceived,
         SpawnPlayer,
-        PlayerPosition,
-        PlayerAnim
+        ObjectPosition,
+        ObjAnimSet,
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -24,8 +24,8 @@ namespace MpGungeon.Server
         welcomeReceived = 1,
         message,
         udpTestReceived,
-        PlayerMovement,
-        PlayerAnim
+        ObjectMovement,
+        ObjAnim
     }
 
     public class Packet : IDisposable

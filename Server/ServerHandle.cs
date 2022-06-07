@@ -40,15 +40,27 @@ namespace MpGungeon.Server
 			}
 		}
 
-		internal static void PlayerMovement(int _fromClient, Packet _packet)
+		internal static void ObjectMovement(int _fromClient, Packet _packet)
 		{
-			using (Packet packet = new Packet((int)ServerPackets.PlayerPosition))
+			using (Packet packet = new Packet((int)ServerPackets.ObjectPosition))
 			{
 				var id = _packet.ReadInt();
 				var pos = _packet.ReadVector2();
 				packet.Write(id);
 				packet.Write(pos);
 				ServerSend.SendUDPDataToAll(_fromClient, packet);
+			};
+		}
+
+		internal static void ObjAnim(int _fromClient, Packet _packet)
+		{
+			using (Packet packet = new Packet((int)ServerPackets.ObjAnimSet))
+			{
+				var id = _packet.ReadInt();
+				var clip = _packet.ReadString();
+				packet.Write(id);
+				packet.Write(clip);
+				ServerSend.SendTCPDataToAll(_fromClient, packet);
 			};
 		}
 	}

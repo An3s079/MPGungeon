@@ -22,6 +22,9 @@ namespace MpGungeon.Client
 		private delegate void PacketHandler(Packet _packet);
 		private static Dictionary<int, PacketHandler> packetHandlers;
 
+		public int TicksPerSecond = 30;
+
+		
 		private void Awake()
 		{
 			if (instance == null)
@@ -35,31 +38,7 @@ namespace MpGungeon.Client
 			tcp = new TCP();
 			udp = new UDP();
 		}
-		public int TicksPerSecond = 30;
-
-		private float _t;
-
-		void Update()
-		{
-			if (GameManager.Instance.PrimaryPlayer != null)
-			{
-				PlayerController p = GameManager.Instance.PrimaryPlayer;
-				if (p.specRigidbody.Velocity.magnitude > 0)
-				{
-					float dur = 1f / this.TicksPerSecond;
-					_t += Time.deltaTime;
-					int cnt = 3;
-					while (_t > dur && cnt > 0)
-					{
-						_t -= dur;
-						cnt--;
-						ClientSend.SendPlayerPos(p.specRigidbody.Position.GetPixelVector2(), myId);
-					}
-
-					
-				}
-			}
-		}
+		
 
 		public void ConnectToServer(string CodeString)
 		{
@@ -70,7 +49,8 @@ namespace MpGungeon.Client
 
 				tcp.Connect();
 
-			}catch(Exception e)
+			}
+			catch(Exception e)
 			{
 				ETGModConsole.Log(e.ToString());
 			}
@@ -292,7 +272,8 @@ namespace MpGungeon.Client
 				{ (int)ServerPackets.welcome , ClientHandle.Welcome},
 				{ (int)ServerPackets.messageReceived , ClientHandle.Message},
 				{ (int)ServerPackets.SpawnPlayer, ClientHandle.SpawnPlayer},
-				{ (int)ServerPackets.PlayerPosition, ClientHandle.SetPlayerPos},
+				{ (int)ServerPackets.ObjectPosition, ClientHandle.SetObjPos},
+				{ (int)ServerPackets.ObjAnimSet, ClientHandle.SetObjAnim},
 			};
 
 		}

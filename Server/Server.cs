@@ -153,7 +153,8 @@ namespace MpGungeon.Server
 			{
 				{ (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived},
 				{ (int)ClientPackets.message, ServerHandle.MessageRecieved },
-				{ (int)ClientPackets.PlayerMovement, ServerHandle.PlayerMovement }
+				{ (int)ClientPackets.ObjectMovement, ServerHandle.ObjectMovement },
+				{ (int)ClientPackets.ObjAnim, ServerHandle.ObjAnim }
 			};
 		}
 	}

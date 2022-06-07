@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using UnityEngine;
 
@@ -14,8 +16,8 @@ namespace MpGungeon.Client
         welcome = 1,
         messageReceived,
         SpawnPlayer,
-        PlayerPosition,
-        PlayerAnim
+        ObjectPosition,
+        ObjAnimSet,
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -24,9 +26,10 @@ namespace MpGungeon.Client
         welcomeReceived = 1,
         message,
         udpTestReceived,
-        PlayerMovement,
-        PlayerAnim
+        ObjectMovement,
+        ObjAnim
     }
+
     public class Packet : IDisposable
     {
         private List<byte> buffer;
@@ -370,6 +373,15 @@ namespace MpGungeon.Client
         #endregion
 
         private bool disposed = false;
+        public static byte[] ObjectToByteArray(System.Object obj)
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            using (var ms = new MemoryStream())
+            {
+                bf.Serialize(ms, obj);
+                return ms.ToArray();
+            }
+        }
 
         protected virtual void Dispose(bool _disposing)
         {
