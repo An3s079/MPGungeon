@@ -32,7 +32,6 @@ namespace MpGungeon.Client
 		{
 			int _id = _packet.ReadInt();
 			Vector3 _position = _packet.ReadVector2();
-
 			Manager.objects[_id].transform.position = _position;
 		}
 		public static void SetObjAnim(Packet _packet)
@@ -41,13 +40,15 @@ namespace MpGungeon.Client
 			try
 			{
 				string clip = _packet.ReadString();
-				var animator = Manager.objects[_id];
-
-				//animator.Play(clip);
+				var animator = Manager.objects[_id].GetComponentInChildren<tk2dSpriteAnimator>();
+				if (Manager.objects[_id].GetComponent<PlayerController>() != null)
+				{
+					animator = Manager.objects[_id].GetComponent<PlayerController>().spriteAnimator;
+				}
+				animator.Play(clip);
 			}catch(Exception e)
 			{
 				ETGModConsole.Log("looking for key: " + _id + "\n have id's: ");
-				ETGModConsole.Log(Manager.objects.Count.ToString());
 				foreach (var key in Manager.objects)
 					{
 					
@@ -63,6 +64,28 @@ namespace MpGungeon.Client
 			string character = _packet.ReadString();
 			Vector3 _position = _packet.ReadVector3();
 			Manager.SpawnPlayer(_id, "null name", character, _position);
+		}
+
+		internal static void SetObjPosRemainder(Packet _packet)
+		{
+			int _id = _packet.ReadInt();
+			Vector3 _position = _packet.ReadVector2();
+			Vector3 remainder = _packet.ReadVector2();
+			Manager.objects[_id].GetComponent<PlayerController>().specRigidbody.Position = new Position(new IntVector2((int)_position.x, (int)_position.y), remainder);
+		}
+
+		internal static void SetObjFlip(Packet _packet)
+		{
+			int _id = _packet.ReadInt();
+			bool flipped = _packet.ReadBool();
+			var player = Manager.objects[_id].GetComponent<PlayerController>();
+			player.sprite.FlipX = flipped;
+			
+			if (flipped)
+				player.sprite.gameObject.transform.localPosition = new Vector3(player.sprite.GetBounds().extents.x * 2f, 0f, 0f);
+			else
+				player.sprite.gameObject.transform.localPosition = Vector3.zero;
+
 		}
 	}
 }

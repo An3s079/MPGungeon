@@ -274,6 +274,8 @@ namespace MpGungeon.Client
 				{ (int)ServerPackets.SpawnPlayer, ClientHandle.SpawnPlayer},
 				{ (int)ServerPackets.ObjectPosition, ClientHandle.SetObjPos},
 				{ (int)ServerPackets.ObjAnimSet, ClientHandle.SetObjAnim},
+				{ (int)ServerPackets.ObjectRemain, ClientHandle.SetObjPosRemainder},
+				{ (int)ServerPackets.flip, ClientHandle.SetObjFlip},
 			};
 
 		}

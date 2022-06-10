@@ -8,7 +8,6 @@ namespace MpGungeon.Server
 
     //yeah i stole this.
 
-    /// <summary>Sent from server to client.</summary>
     public enum ServerPackets
     {
         welcome = 1,
@@ -16,6 +15,8 @@ namespace MpGungeon.Server
         SpawnPlayer,
         ObjectPosition,
         ObjAnimSet,
+        ObjectRemain,
+        flip,
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -25,7 +26,9 @@ namespace MpGungeon.Server
         message,
         udpTestReceived,
         ObjectMovement,
-        ObjAnim
+        ObjAnim,
+        ObjectRemain,
+        flip,
     }
 
     public class Packet : IDisposable

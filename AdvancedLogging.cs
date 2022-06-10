@@ -11,7 +11,35 @@ namespace MpGungeon
 	{
 		public static void LogError(object msg)
 		{
-			ETGModConsole.Log("<color=#d90f0f>" + MpGungeon.metadata.Name + ": " + msg + "</color>");
+			string message = msg.ToString();
+			Color color = Color.red;
+
+			SGroup sGroup = new SGroup();
+			sGroup.AutoGrowDirection = SGroup.EDirection.Vertical;
+			sGroup.AutoLayout = (SGroup g) => g.AutoLayoutHorizontal;
+			sGroup.OnUpdateStyle = delegate (SElement elem)
+			{
+				elem.Fill();
+			};
+			sGroup.AutoLayoutVerticalStretch = false;
+			sGroup.AutoLayoutHorizontalStretch = false;
+			sGroup.GrowExtra = Vector2.zero;
+			sGroup.ContentSize = Vector2.zero;
+			sGroup.AutoLayoutPadding = 0;
+			sGroup.Background = Color.clear;
+
+			LogLabel modname = new LogLabel(MpGungeon.metadata.Name + ": ");
+			modname.Colors[0] = color;
+			sGroup.Children.Add(modname);
+
+			LogLabel label = new LogLabel(message);
+			label.Colors[0] = color;
+			label.Background = Color.clear;
+			sGroup.Children.Add(label);
+
+			ETGModConsole.Instance.GUI[0].Children.Add(sGroup);
+
+			ETGModConsole.Instance.GUI[0].UpdateStyle();
 		}
 
 		public static void LogPlain(object msg, Color32? col = null)
@@ -40,11 +68,13 @@ namespace MpGungeon
 		public static SGroup Log(object msg, Color32? col = null, bool HaveModName = false, bool HaveModIcon = false, SModifier[] modifiers = null)
 		{
 
-			//in your module outside of methods you need:
-			// public static ETGModuleMetadata metadata = new ETGModuleMetadata(); 
+			//in your MpGungeon outside of methods you need:
+			// public static ETGMpGungeonMetadata metadata = new ETGMpGungeonMetadata(); 
+			//public static string ZipFilePath;
 
-			//then in your modules init you need:
+			//then in your MpGungeons init you need:
 			// metadata = this.Metadata;
+			//ZipFilePath = this.Metadata.Archive;
 			Color color = Color.white;
 			if (col != null)
 			{
@@ -80,13 +110,13 @@ namespace MpGungeon
 				modname.Colors[0] = color;
 				sGroup.Children.Add(modname);
 			}
-			string[] split = Regex.Split(message, "(@\\(.+?\\))");
+			string[] split = Regex.Split(message, "(@[.+?])");
 			foreach (string item in split)
 			{
 
 				if (item.StartsWith("@("))
 				{
-					string image = item.TrimStart('@', '(').TrimEnd(')');
+					string image = item.TrimStart('@', '`').TrimEnd('`');
 					string[] sizeMult = image.Split(',');
 					image = sizeMult[0];
 					float SizeMultButForReal = 1;
@@ -136,7 +166,6 @@ namespace MpGungeon
 		/// <param name="col">text color you want</param>
 		/// <param name="HaveModName">whether your log messege will have the mod name at the front</param>
 		/// <param name="HaveModIcon">whether your logged messege will have your mod icon at the front</param>
-		///  <param name="UpdatedTextOnClick">if you want your button to show mre text upon being clicked put it here</param>
 		public static SButton LogButton(object msg, Color32? col = null, string UpdatedTextOnClick = null, bool HaveModName = false, bool HaveModIcon = false)
 		{
 
@@ -189,14 +218,12 @@ namespace MpGungeon
 			bool ShowAlt = false;
 			if (!string.IsNullOrEmpty(UpdatedTextOnClick))
 			{
-				var i = new SLabel(UpdatedTextOnClick);
 				btn.OnClick += (obj) =>
 				{
 					ShowAlt = !ShowAlt;
 					ETGModConsole.Instance.GUI[0].UpdateStyle();
-					
 				};
-				
+				var i = new SLabel(UpdatedTextOnClick);
 				i.Colors[0] = color;
 				i.Background = Color.clear;
 

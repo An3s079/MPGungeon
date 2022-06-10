@@ -11,11 +11,32 @@ namespace MpGungeon.Client
 		public int ID;
 		Vector3 prevPos;
 		string prevClip;
+		PlayerController player;
+		Position pos;
+		bool flipped; 
+		void Start()
+		{
+			player = gameObject.GetComponent<PlayerController>();
+			flipped = player.SpriteFlipped;
+		}
 		void Update()
 		{
 			if (gameObject != null)
 			{
-				if (gameObject.transform.position != prevPos)
+				if(player != null)
+				{
+					if (pos.GetPixelVector2() != player.specRigidbody.Position.GetPixelVector2())
+					{
+						ClientSend.SendObjectPosWithRemainder(new Vector2(player.specRigidbody.Position.X, player.specRigidbody.Position.Y), player.specRigidbody.Position.Remainder, ID);
+						prevPos = new Vector2(player.specRigidbody.Position.X, player.specRigidbody.Position.Y); 
+					}
+					if(player.SpriteFlipped != flipped)
+					{
+						ClientSend.SendFlipped(player.SpriteFlipped, ID);
+						flipped = player.SpriteFlipped;
+					}
+				}
+				else if (gameObject.transform.position != prevPos)
 				{
 					float dur = 1f / Client.instance.TicksPerSecond;
 					_t += Time.deltaTime;
@@ -24,8 +45,9 @@ namespace MpGungeon.Client
 					{
 						_t -= dur;
 						cnt--;
-						ClientSend.SendObjectPos(gameObject.transform.position, ID);
-						prevPos = gameObject.transform.position;
+						
+							ClientSend.SendObjectPos(gameObject.transform.position, ID);
+							prevPos = gameObject.transform.position;
 					}
 				}
 			}

@@ -174,24 +174,24 @@ namespace MpGungeon.Server
 		{
 			player = new Player(id, _playerName, pos, identity);
 
-			foreach (Client _client in Server.clients.Values)
-			{
-				if (_client.player != null)
-				{
-					if (_client.id != id)
-					{
-						ServerSend.SpawnPlayer(id, _client.player);
-					}
-				}
-			}
+            foreach (Client _client in Server.clients.Values)
+            {
+                if (_client.player != null)
+                {
+                    if (_client.id != id)
+                    {
+                        ServerSend.SpawnPlayer(id, _client.player);
+                    }
+                }
+            }
 
-			foreach (Client _client in Server.clients.Values)
-			{
-				if (_client.player != null)
-				{
-					ServerSend.SpawnPlayer(_client.id, player);
-				}
-			}
+            foreach (Client _client in Server.clients.Values)
+            {
+                if (_client.player != null)
+                {	
+                    ServerSend.SpawnPlayer(_client.id, player);
+                }
+            }
 		}
 	}
 }

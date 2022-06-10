@@ -18,6 +18,8 @@ namespace MpGungeon.Client
         SpawnPlayer,
         ObjectPosition,
         ObjAnimSet,
+        ObjectRemain,
+        flip,
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -27,7 +29,9 @@ namespace MpGungeon.Client
         message,
         udpTestReceived,
         ObjectMovement,
-        ObjAnim
+        ObjAnim,
+        ObjectRemain,
+        flip,
     }
 
     public class Packet : IDisposable

@@ -45,12 +45,32 @@ namespace MpGungeon.Client
 			}
 		}
 
+		internal static void SendFlipped(bool spriteFlipped, int iD)
+		{
+			using (Packet packet = new Packet((int)ClientPackets.flip))
+			{
+				packet.Write(iD);
+				packet.Write(spriteFlipped);
+				SendTCPData(packet);
+			}
+		}
+
 		public static void SendObjectPos(Vector2 _pos, int _id)
 		{
 			using (Packet packet = new Packet((int)ClientPackets.ObjectMovement))
 			{
 				packet.Write(_id);
 				packet.Write(_pos);
+				SendUDPData(packet);
+			}
+		}
+		public static void SendObjectPosWithRemainder(Vector2 _pos, Vector2 remainder, int _id)
+		{
+			using (Packet packet = new Packet((int)ClientPackets.ObjectRemain))
+			{
+				packet.Write(_id);
+				packet.Write(_pos);
+				packet.Write(remainder);
 				SendUDPData(packet);
 			}
 		}

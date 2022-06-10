@@ -13,21 +13,27 @@ namespace MpGungeon.Client
         public static Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
 		public static Dictionary<int, GameObject> objects = new Dictionary<int, GameObject>();
 		public static void SpawnPlayer(int _id, string _username, string character, Vector3 _position)
-        {
-            GameObject _player = new GameObject();
-			ItemAPI.ItemBuilder.AddSpriteToObject("player2", "MpGungeon/Resources/RedSquare", _player);
-			Instantiate(_player, _position, Quaternion.identity);
-			var animator = _player.GetOrAddComponent<tk2dSpriteAnimator>();
-			character = character.ToLower();
-			if (character == "pilot")
+		{
+			if(character.ToLower() == "pilot")
 			{
 				character = "rogue";
 			}
-			var prefab = (GameObject)BraveResources.Load("Playerrogue.prefab");//Resources.Load("Assets/Resources/CHARACTERDB:" + args[0] + ".prefab");
-			animator.Library.clips = prefab.GetComponent<PlayerController>().spriteAnimator.Library.clips;
-			ETGModConsole.Log(prefab.GetComponent<PlayerController>().characterIdentity.ToString());
-			players.Add(_id, _player);
-			objects.Add(_id, _player);
+			GameObject _player = (GameObject)BraveResources.Load("Player" + character);
+			var player = Instantiate(_player, _position, Quaternion.identity);
+			var controller = player.GetComponent<PlayerController>();
+			controller.HasShadow = true;
+			controller.usingForcedInput = true;
+			var i = controller.specRigidbody.GetPixelColliders();
+			foreach (var col in i)
+			{
+				col.Enabled = false;
+			}
+			controller.enabled = false;
+			SpriteOutlineManager.AddOutlineToSprite(controller.sprite, Color.black);
+			controller.ShadowObject.GetComponent<Renderer>().enabled = true;
+			
+			players.Add(_id, player);
+			objects.Add(_id, player);
 		}
 
 		public static int GetNewIDForObject()

@@ -16,18 +16,13 @@ namespace MpGungeon.Server
 			Vector2 pos = _packet.ReadVector2();
 			if (_fromClient == 1)
 			{
-				p1Identity = identity;
 				ETGModConsole.Log($"Player \"{username}\" connected successfully and is now player {_fromClient}. (this is you)");
 			}
 			else
 				ETGModConsole.Log($"Player \"{username}\" connected successfully and is now player {_fromClient}.");
+			Server.clients[1].SendIntoGame("null", GameManager.Instance.PrimaryPlayer.characterIdentity.ToString(), GameManager.Instance.PrimaryPlayer.specRigidbody.Position.GetPixelVector2());
+			Server.clients[_fromClient].SendIntoGame("null", identity, pos);
 
-			if (_fromClient != _clientIdCheck)
-				ETGModConsole.Log($"Player \"{username}\" (ID: {_fromClient}) has assumed the wrong client ID ({_clientIdCheck})!");
-			if(_fromClient != 1)
-				Server.clients[_fromClient].SendIntoGame("null", identity, pos);
-			if (_fromClient == 2)
-				Server.clients[1].SendIntoGame("null", p1Identity, GameManager.Instance.PrimaryPlayer.specRigidbody.Position.GetPixelVector2());
 		}
 
 		internal static void MessageRecieved(int _fromClient, Packet _packet)
@@ -60,6 +55,32 @@ namespace MpGungeon.Server
 				var clip = _packet.ReadString();
 				packet.Write(id);
 				packet.Write(clip);
+				ServerSend.SendTCPDataToAll(_fromClient, packet);
+			};
+		}
+
+		internal static void ObjectRemain(int _fromClient, Packet _packet)
+		{
+			using (Packet packet = new Packet((int)ServerPackets.ObjectRemain))
+			{
+				var id = _packet.ReadInt();
+				var pos = _packet.ReadVector2();
+				var rem = _packet.ReadVector2();
+				packet.Write(id);
+				packet.Write(pos);
+				packet.Write(rem);
+				ServerSend.SendUDPDataToAll(_fromClient, packet);
+			};
+		}
+
+		internal static void Flip(int _fromClient, Packet _packet)
+		{
+			using (Packet packet = new Packet((int)ServerPackets.flip))
+			{
+				var id = _packet.ReadInt();
+				var flip = _packet.ReadBool();
+				packet.Write(id);
+				packet.Write(flip);
 				ServerSend.SendTCPDataToAll(_fromClient, packet);
 			};
 		}
